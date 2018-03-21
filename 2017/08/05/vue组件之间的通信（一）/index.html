@@ -1,0 +1,871 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="欢迎来到默语个人博客" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="Vue组件之间的通信个人认为Vue组件之间的通信主要归类为3种：  父子组件之间的通信 任意两个组件之间的通信 最终的boss，Vuex-状态管理模式  此次写一下前两种通信，后续会单独写vuex相关的内容。 父子组件的通信这种方式的通信是最简单，下面直接贴代码12345678910111213141516171819202122232425262728// parent.vue&amp;lt;templ">
+<meta property="og:type" content="article">
+<meta property="og:title" content="vue组件之间的通信（一）">
+<meta property="og:url" content="https://moyueating.github.io/2017/08/05/vue组件之间的通信（一）/index.html">
+<meta property="og:site_name" content="默语的博客">
+<meta property="og:description" content="Vue组件之间的通信个人认为Vue组件之间的通信主要归类为3种：  父子组件之间的通信 任意两个组件之间的通信 最终的boss，Vuex-状态管理模式  此次写一下前两种通信，后续会单独写vuex相关的内容。 父子组件的通信这种方式的通信是最简单，下面直接贴代码12345678910111213141516171819202122232425262728// parent.vue&amp;lt;templ">
+<meta property="og:updated_time" content="2017-08-24T15:45:17.447Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="vue组件之间的通信（一）">
+<meta name="twitter:description" content="Vue组件之间的通信个人认为Vue组件之间的通信主要归类为3种：  父子组件之间的通信 任意两个组件之间的通信 最终的boss，Vuex-状态管理模式  此次写一下前两种通信，后续会单独写vuex相关的内容。 父子组件的通信这种方式的通信是最简单，下面直接贴代码12345678910111213141516171819202122232425262728// parent.vue&amp;lt;templ">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://moyueating.github.io/2017/08/05/vue组件之间的通信（一）/"/>
+
+
+
+
+
+  <title>vue组件之间的通信（一） | 默语的博客</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">默语的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">假装我很喜欢编程</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/me/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://moyueating.github.io/2017/08/05/vue组件之间的通信（一）/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="默语">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="默语的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">vue组件之间的通信（一）</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-05T23:02:48+08:00">
+                2017-08-05
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-comment-o"></i>
+              </span>
+              
+                <a href="/2017/08/05/vue组件之间的通信（一）/#SOHUCS" itemprop="discussionUrl">
+                  <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="2017/08/05/vue组件之间的通信（一）/" itemprop="commentsCount"></span>
+                </a>
+              
+            
+          
+
+          
+          
+             <span id="/2017/08/05/vue组件之间的通信（一）/" class="leancloud_visitors" data-flag-title="vue组件之间的通信（一）">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="Vue组件之间的通信"><a href="#Vue组件之间的通信" class="headerlink" title="Vue组件之间的通信"></a>Vue组件之间的通信</h2><p>个人认为Vue组件之间的通信主要归类为3种：</p>
+<ul>
+<li>父子组件之间的通信</li>
+<li>任意两个组件之间的通信</li>
+<li>最终的boss，Vuex-状态管理模式</li>
+</ul>
+<p>此次写一下前两种通信，后续会单独写vuex相关的内容。</p>
+<h2 id="父子组件的通信"><a href="#父子组件的通信" class="headerlink" title="父子组件的通信"></a>父子组件的通信</h2><p>这种方式的通信是最简单，下面直接贴代码<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line">// parent.vue</div><div class="line">&lt;template&gt;</div><div class="line">    &lt;div class=&quot;parent&quot;&gt;</div><div class="line">        &lt;p&gt;父亲:给你&#123;&#123; money &#125;&#125;元零花钱&lt;/p&gt;</div><div class="line">        &lt;kid :money=&quot; money&quot; @repay=&quot;repay&quot;&gt;&lt;/kid&gt;</div><div class="line">        &lt;br&gt;</div><div class="line">        &lt;button @click=&quot;add&quot;&gt;那给你加100&lt;/button&gt;</div><div class="line">        &lt;p v-if=&quot;back&quot; @repay=&quot;repay&quot;&gt;儿子：超过300我不要，还给你 &#123;&#123; back &#125;&#125;元&lt;/p&gt;</div><div class="line">    &lt;/div&gt;</div><div class="line">&lt;/template&gt;</div><div class="line">&lt;script&gt;</div><div class="line">export default &#123;</div><div class="line">    name: &apos;parent&apos;,</div><div class="line">    data () &#123;</div><div class="line">        return &#123;</div><div class="line">            money: 100,</div><div class="line">            back: 0</div><div class="line">        &#125;</div><div class="line">    &#125;,</div><div class="line">    components:&#123; kid &#125;,</div><div class="line">    methods:&#123;</div><div class="line">        repay (back) &#123;</div><div class="line">            this.back = back</div><div class="line">        &#125;,</div><div class="line">        add()&#123;</div><div class="line">            this.money += 100;</div><div class="line">        &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line">// kid.vue</div><div class="line">&lt;template&gt;</div><div class="line">    &lt;div class=&quot;parent&quot;&gt;</div><div class="line">        &lt;p v-if=&quot;pocketMoney &lt; 300&quot;&gt;儿子: &#123;&#123; pocketMoney &#125;&#125;太少了，不够 &lt;/p&gt;</div><div class="line">        &lt;p v-else&gt;儿子: 谢谢老爸！&lt;/p&gt;</div><div class="line">        &lt;button v-if=&quot;pocketMoney &gt; 300&quot; @click=&quot;repay&quot;&gt;点击有惊喜&lt;/button&gt;</div><div class="line">    &lt;/div&gt;</div><div class="line">&lt;/template&gt;</div><div class="line">&lt;script type=&quot;text/javascript&quot;&gt;</div><div class="line">export default &#123;</div><div class="line">    name: &apos;kid&apos;,</div><div class="line">    props: &#123;</div><div class="line">        money: Number</div><div class="line">    &#125;,</div><div class="line">    data () &#123;</div><div class="line">        return &#123;</div><div class="line">        &#125;</div><div class="line">    &#125;,</div><div class="line">    computed: &#123;</div><div class="line">        pocketMoney () &#123;</div><div class="line">            return this.money;</div><div class="line">        &#125;</div><div class="line">    &#125;,</div><div class="line">    methods: &#123; </div><div class="line">        repay () &#123;</div><div class="line">            this.$emit(&apos;repay&apos;,this.pocketMoney-300)</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line">&lt;/script&gt;</div></pre></td></tr></table></figure>
+<p>这里讲了一个小故事，老爸给儿子零花钱，老爸通过props将钱给到儿子，儿子拿到后通过计算属性得到自己的零花钱，发现太少了，于是老爸多给了儿子，可是儿子只想要300块去steam上买个游戏，超过300块后，儿子就发送了一个自定义事件repay，将超过300块的钱还给老爸，老爸通过监听repay这个事件的回调里面拿到儿子还给他的钱。</p>
+<h2 id="任意两个组件之间的通信"><a href="#任意两个组件之间的通信" class="headerlink" title="任意两个组件之间的通信"></a>任意两个组件之间的通信</h2><p>但是实际当项目逐渐变大，组件之间的层级变多，很多时候非父子间的组件通信也就开始多了，这时候我们就需要另外一种通信方式，官方的叫法<a href="https://cn.vuejs.org/v2/guide/components.html#非父子组件通信" target="_blank" rel="external">global bus</a>。<br>贴代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line">// one.vue</div><div class="line">&lt;template&gt;</div><div class="line">  &lt;div&gt;</div><div class="line">      这是one组件</div><div class="line">      &lt;button @click=&quot;commit&quot;&gt;给two组件发送信息&lt;/button&gt;</div><div class="line">      &lt;p&gt; &#123;&#123; message &#125;&#125;&lt;/p&gt;</div><div class="line">  &lt;/div&gt;</div><div class="line">&lt;/template&gt;</div><div class="line">&lt;script type=&quot;text/javascript&quot;&gt;</div><div class="line">import &#123; bus &#125; from &apos;./bus&apos;</div><div class="line">export default &#123;</div><div class="line">    name: &apos;one&apos;,</div><div class="line">    data () &#123;</div><div class="line">        return &#123;</div><div class="line">            message: &apos;&apos;,</div><div class="line">        &#125;</div><div class="line">    &#125;,</div><div class="line">    methods:&#123;</div><div class="line">        commit () &#123;</div><div class="line">            bus.$emit(&apos;sendMsg&apos;,&#123;</div><div class="line">                msg: &apos;这条信息来自于one&apos;</div><div class="line">            &#125;)</div><div class="line">        &#125;</div><div class="line">    &#125;,</div><div class="line">    mounted () &#123;</div><div class="line">        bus.$on(&apos;backMsg&apos;, (data) =&gt; &#123;</div><div class="line">            this.message = data.msg;</div><div class="line">        &#125;)</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div></pre></td><td class="code"><pre><div class="line">// two.vue</div><div class="line">&lt;template&gt;</div><div class="line">    &lt;div @click=&quot;commit&quot;&gt;</div><div class="line">        &lt;p&gt;这是two组件&lt;button @click=&quot;commit&quot;&gt;给one组件发送信息&lt;/button&gt;&lt;/p&gt;</div><div class="line">        &lt;p&gt;&#123;&#123; message &#125;&#125;&lt;/p&gt;</div><div class="line">    &lt;/div&gt;</div><div class="line">&lt;/template&gt;</div><div class="line"></div><div class="line">&lt;script type=&quot;text/javascript&quot;&gt;</div><div class="line">import &#123; bus &#125; from &apos;./bus&apos;</div><div class="line">export default &#123;</div><div class="line">    name: &apos;two&apos;,</div><div class="line">    data () &#123;</div><div class="line">        return &#123;</div><div class="line">            message: &apos;&apos;</div><div class="line">        &#125;</div><div class="line">    &#125;,</div><div class="line">    methods:&#123;</div><div class="line">        commit () &#123;</div><div class="line">            bus.$emit(&apos;backMsg&apos;,&#123;</div><div class="line">                msg: &apos;这条信息来自于two&apos;</div><div class="line">            &#125;)</div><div class="line">        &#125;</div><div class="line">    &#125;,</div><div class="line">    mounted () &#123;</div><div class="line">        bus.$on(&apos;sendMsg&apos;, (data) =&gt; &#123;</div><div class="line">            this.message = data.msg;</div><div class="line">        &#125;)</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line">&lt;/script&gt;</div></pre></td></tr></table></figure>
+<p>最关键的bus,却是最简单的<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">// bus.vue</div><div class="line">&lt;script&gt;</div><div class="line">import Vue from &apos;vue&apos;</div><div class="line">export default &#123;</div><div class="line">    bus: new Vue(),</div><div class="line">&#125;</div><div class="line">&lt;/script&gt;</div></pre></td></tr></table></figure></p>
+<p>其实这里就是额外new了一个Vue的实例对象，这个实例什么事情都不干，就收发事件，这里的bus监听了两个事件，一个sendMsg,一个backMsg，当bus监听到one发出sendMsg后，bus就把这个信息告诉two,而当bus监听到two发出backMsg后，bus就把这个信息告诉one，这就是bus干的事。因为借助于第三者的bus，所以one和two不一定是父子关系，可以是任意两个甚至多个组件之间的通信。这种通信其实也可以取代父子组件之间的通信，但是平时父子组件的通信，第一种是最方便的，也就没必要用这种方式了。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>这里讲了前两种组件之间的通信方式，后面一节会着重讲最终大boss–vuex。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="/images/wechat.png" alt="默语 WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="/images/alipay.png" alt="默语 Alipay"/>
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/07/08/浅谈babel原理以及使用/" rel="next" title="浅谈babel原理以及使用">
+                <i class="fa fa-chevron-left"></i> 浅谈babel原理以及使用
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/10/24/vuex/" rel="prev" title="vuex">
+                vuex <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="SOHUCS"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.png"
+               alt="默语" />
+          <p class="site-author-name" itemprop="name">默语</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+           
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">10</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">12</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/moyueating" target="_blank" title="Github">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  Github
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://whutzkj.space/cssloading/" target="_blank" title="CSS3">
+                  
+                    <i class="fa fa-fw fa-css3"></i>
+                  
+                  CSS3
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Vue组件之间的通信"><span class="nav-number">1.</span> <span class="nav-text">Vue组件之间的通信</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#父子组件的通信"><span class="nav-number">2.</span> <span class="nav-text">父子组件的通信</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#任意两个组件之间的通信"><span class="nav-number">3.</span> <span class="nav-text">任意两个组件之间的通信</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">4.</span> <span class="nav-text">总结</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">默语</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+  
+  <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+  
+    <script type="text/javascript">
+    (function(){
+      var appid = 'cyt552QVK';
+      var conf = '64f9a7eb88d853b1d6cfaf923ce65610';
+      var width = window.innerWidth || document.documentElement.clientWidth;
+      if (width < 960) {
+      window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="https://changyan.sohu.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>'); } else { var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("https://changyan.sohu.com/upload/changyan.js",function(){
+        window.changyan.api.config({appid:appid,conf:conf})});
+      }
+    })();
+    </script>
+    <script type="text/javascript" src="https://assets.changyan.sohu.com/upload/plugins/plugins.count.js"></script>
+  
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("qcd3WRIrrzzx9uflEM9Kr5W8-gzGzoHsz", "m5nWtaAtY3ovz25DzPKDAmqr");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
